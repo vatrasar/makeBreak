@@ -1,11 +1,15 @@
 import sys
 import threading
 
+from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QMainWindow
 
 from MainWindows import Ui_MainWindow
 import time
+
+from settingsWindow import Ui_Dialog
+
 
 class MainWindowController():
     def __init__(self,window:QMainWindow,ui:Ui_MainWindow,time_to_start_long_break:int,time_for_long_break:int,time_for_short_break:int,time_to_start_short_break:int) -> None:
@@ -69,15 +73,37 @@ class MainWindowController():
     def add_tray_menu(self):
         icon = QIcon("ikona.png")
         menu = QMenu()
+        exitAction = menu.addAction("Ustawienia")
+        exitAction.triggered.connect(self.open_settigns)
 
         exitAction = menu.addAction("exit")
         exitAction.triggered.connect(sys.exit)
+
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
         self.tray.setContextMenu(menu)
 
         self.tray.show()
+    def open_settigns(self):
+        window = QtWidgets.QDialog()
 
+        ui_settings=Ui_Dialog()
+        ui_settings.setupUi(window)
+        self.init_settings_values(ui_settings)
+        if(window.exec_()):
+
+            self.time_for_long_break=ui_settings.spin_time_for_long_break.value()*60
+            self.time_for_short_break=ui_settings.spin_shor_break_time.value()
+            self.time_to_start_long_break=ui_settings.spin_time_to_long_break.value()*60
+            self.time_to_start_short_break=ui_settings.spin_time_to_short_break.value()*60
+
+    def init_settings_values(self,ui_settings:Ui_Dialog):
+
+        ui_settings.spin_time_for_long_break.setValue(self.time_for_long_break/60)
+        ui_settings.spin_shor_break_time.setValue(self.time_for_short_break)
+        ui_settings.spin_time_to_long_break.setValue(self.time_to_start_long_break/60)
+
+        ui_settings.spin_time_to_short_break.setValue(self.time_to_start_short_break/60)
     def is_enough_time_for_short(self):
         time_form_last_long_break=time.time()-self.long_break_start_time
         return (self.time_to_start_long_break-time_form_last_long_break)-self.time_to_start_short_break-self.time_for_short_break>0

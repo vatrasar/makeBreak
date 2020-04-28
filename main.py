@@ -1,10 +1,9 @@
 import sys
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QApplication
 
-from MainWindowController import MainWindowController
+from controllers.MainWindowController import MainWindowController
 from MainWindows import Ui_MainWindow
 
 
@@ -21,6 +20,6 @@ if __name__ == "__main__":
 
     ui = Ui_MainWindow()
     ui.setupUi(window)
-    controller = MainWindowController(window,ui,20,20,5,5)
+    controller = MainWindowController(window,ui,3600,180,20,1200)
     window.show()
     sys.exit(app2.exec_())
