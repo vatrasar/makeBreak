@@ -13,18 +13,68 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow{
+background:rgb(85, 87, 83);
+}
+#centralwidget{
+background:rgb(85, 87, 83);
+}
+
+QLabel{
+color:rgb(13, 198, 86);
+font-size:30px;
+}
+
+QPushButton{
+background:rgb(233, 185, 110);
+font-size:19px;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
    <widget class="QPushButton" name="end">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>250</y>
-      <width>89</width>
-      <height>25</height>
+      <x>350</x>
+      <y>350</y>
+      <width>131</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string>End</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnStartWork">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>250</y>
+      <width>211</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Rozpocznij prace</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labInfo">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>100</y>
+      <width>501</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Czas do zakończenia przerwy:</string>
     </property>
    </widget>
   </widget>

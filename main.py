@@ -18,8 +18,9 @@ if __name__ == "__main__":
     app2 = QApplication(sys.argv)
 
     window = QtWidgets.QMainWindow()
-    controller = MainWindowController(window)
+
     ui = Ui_MainWindow()
     ui.setupUi(window)
+    controller = MainWindowController(window,ui,20,20,5,5)
     window.show()
     sys.exit(app2.exec_())
