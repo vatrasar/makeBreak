@@ -34,9 +34,6 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName("centralwidget")
-        self.end = QtWidgets.QPushButton(self.centralwidget)
-        self.end.setGeometry(QtCore.QRect(350, 350, 131, 51))
-        self.end.setObjectName("end")
         self.btnStartWork = QtWidgets.QPushButton(self.centralwidget)
         self.btnStartWork.setGeometry(QtCore.QRect(310, 250, 211, 61))
         self.btnStartWork.setObjectName("btnStartWork")
@@ -54,6 +51,5 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.end.setText(_translate("MainWindow", "End"))
         self.btnStartWork.setText(_translate("MainWindow", "Rozpocznij prace"))
         self.labInfo.setText(_translate("MainWindow", "Czas do zakończenia przerwy:"))

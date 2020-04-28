@@ -38,19 +38,6 @@ font-size:19px;
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <widget class="QPushButton" name="end">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>350</y>
-      <width>131</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>End</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnStartWork">
     <property name="geometry">
      <rect>
