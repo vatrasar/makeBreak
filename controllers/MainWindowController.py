@@ -26,6 +26,7 @@ class MainWindowController():
         self.time_to_start_long_break=time_to_start_long_break
         self.long_break_start_time=time.time()
         self.is_short_break=False
+        self.load_conf_from_file()
 
 
 
@@ -96,6 +97,9 @@ class MainWindowController():
             self.time_for_short_break=ui_settings.spin_shor_break_time.value()
             self.time_to_start_long_break=ui_settings.spin_time_to_long_break.value()*60
             self.time_to_start_short_break=ui_settings.spin_time_to_short_break.value()*60
+            self.save_conf_to_file()
+
+
 
     def init_settings_values(self,ui_settings:Ui_Dialog):
 
@@ -108,6 +112,20 @@ class MainWindowController():
         time_form_last_long_break=time.time()-self.long_break_start_time
         return (self.time_to_start_long_break-time_form_last_long_break)-self.time_to_start_short_break-self.time_for_short_break>0
 
+    def load_conf_from_file(self):
+        file_in=open("conf.txt","r")
+        self.time_for_long_break=int(file_in.readline())
+        self.time_for_short_break=int(file_in.readline())
+        self.time_to_start_long_break=int(file_in.readline())
+        self.time_to_start_short_break=int(file_in.readline())
+        file_in.close()
 
+    def save_conf_to_file(self):
+        file_out = open("conf.txt", "w")
+        file_out.write(str(self.time_for_long_break)+"\n")
+        file_out.write(str(self.time_for_short_break)+"\n")
+        file_out.write(str(self.time_to_start_long_break)+"\n")
+        file_out.write(str(self.time_to_start_short_break)+"\n")
+        file_out.close()
 
 
