@@ -80,7 +80,7 @@ class MainWindowController():
         threading.Timer(1, self.break_step).start()
 
     def add_tray_menu(self):
-        icon = QIcon("ikona.png")
+        icon = QIcon("resources/ikona.png")
         menu = QMenu()
 
 
