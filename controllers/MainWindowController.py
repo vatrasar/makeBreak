@@ -37,7 +37,8 @@ class MainWindowController():
         self.windows.hide()
         self.longThread = threading.Timer(self.time_to_start_long_break,self.make_long_break)
 
-
+        self.stopAction.setEnabled(True)
+        self.resumeAction.setEnabled(False)
         if(not(self.is_short_break)):
             self.long_break_start_time = time.time()
             self.longThread.start()
@@ -119,18 +120,22 @@ class MainWindowController():
         self.stopAction.setEnabled(False)
         self.resumeAction.setEnabled(True)
     def open_settigns(self):
+
         window = QtWidgets.QDialog()
 
         ui_settings=Ui_Dialog()
         ui_settings.setupUi(window)
         self.init_settings_values(ui_settings)
         if(window.exec_()):
-
             self.time_for_long_break=ui_settings.spin_time_for_long_break.value()*60
             self.time_for_short_break=ui_settings.spin_shor_break_time.value()
             self.time_to_start_long_break=ui_settings.spin_time_to_long_break.value()*60
             self.time_to_start_short_break=ui_settings.spin_time_to_short_break.value()*60
             self.save_conf_to_file()
+            self.disable_breaks()
+            self.windows.show()
+        else:
+            self.windows.hide()
 
 
 
