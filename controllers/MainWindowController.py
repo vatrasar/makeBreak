@@ -2,6 +2,7 @@ import sys
 import threading
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QMainWindow, QAction
 
@@ -32,38 +33,59 @@ class MainWindowController():
 
     def close(self):
         self.windows.close()
+    def jetem(self):
+        print("jestem")
+
+
 
     def startWorks(self):
+
         self.windows.hide()
-        self.longThread = threading.Timer(self.time_to_start_long_break,self.make_long_break)
+        self.longThread=QTimer()
+        self.longThread.timeout.connect(self.make_long_break)
+        # self.longThread = threading.Timer(self.time_to_start_long_break,self.make_long_break)
 
         self.stopAction.setEnabled(True)
         self.resumeAction.setEnabled(False)
         if(not(self.is_short_break)):
             self.long_break_start_time = time.time()
-            self.longThread.start()
+            self.longThread.start(self.time_to_start_long_break*1000)
         if (self.is_enough_time_for_short()):
             self.start_short_interval()
 
     def start_short_interval(self):
-        self.shortThread = threading.Timer(self.time_to_start_short_break, self.make_short_break)
-        self.shortThread.start()
+        # self.shortThread = threading.Timer(self.time_to_start_short_break, self.make_short_break)
+        # self.shortThread.start()
+        self.shortThread = QTimer()
+        self.shortThread.timeout.connect(self.make_short_break)
+        self.shortThread.start(self.time_to_start_short_break*1000)
 
     def make_short_break(self):
+        self.shortThread.stop()
         self.ui.btnStartWork.setEnabled(False)
         self.time_to_end_break=self.time_for_short_break
         self.windows.showFullScreen()
         self.is_short_break=True
         self.update_time_label()
-        threading.Timer(1,self.break_step).start()
+
+        self.breakStepThread = QTimer()
+        self.breakStepThread.timeout.connect(self.break_step)
+        self.breakStepThread.start(1000)
+
+
+        # threading.Timer(1,self.break_step).start()
 
 
     def break_step(self):
         self.time_to_end_break-=1
         self.update_time_label()
         if self.time_to_end_break>0:
-            threading.Timer(1, self.break_step).start()
+            breakStepThread = QTimer()
+            breakStepThread.timeout.connect(self.break_step)
+            breakStepThread.start(1000)
+            # threading.Timer(1, self.break_step).start()
         else:
+            self.breakStepThread.stop()
             self.ui.btnStartWork.setEnabled(True)
 
 
@@ -73,12 +95,18 @@ class MainWindowController():
         else:
             self.ui.labInfo.setText("Możesz rozpocząć pracę!")
     def make_long_break(self):
+        self.longThread.stop()
         self.ui.btnStartWork.setEnabled(False)
         self.time_to_end_break = self.time_for_long_break
         self.windows.showFullScreen()
         self.is_short_break = False
         self.update_time_label()
-        threading.Timer(1, self.break_step).start()
+
+        breakStepThread = QTimer()
+        breakStepThread.timeout.connect(self.break_step)
+        breakStepThread.start(1000)
+
+        # threading.Timer(1, self.break_step).start()
 
     def add_tray_menu(self):
         icon = QIcon("resources/ikona.png")
@@ -107,16 +135,19 @@ class MainWindowController():
 
         self.tray.show()
     def exit(self):
-        self.shortThread.cancel()
-        self.longThread.cancel()
+        self.shortThread.stop()
+        self.longThread.stop()
         sys.exit()
     def reasum_breaks(self):
         self.startWorks()
         self.stopAction.setEnabled(True)
         self.resumeAction.setEnabled(False)
     def disable_breaks(self):
-        self.shortThread.cancel()
-        self.longThread.cancel()
+        try:
+            self.shortThread.stop()
+            self.longThread.stop()
+        except AttributeError:
+            pass
         self.stopAction.setEnabled(False)
         self.resumeAction.setEnabled(True)
     def open_settigns(self):
@@ -133,7 +164,8 @@ class MainWindowController():
             self.time_to_start_short_break=ui_settings.spin_time_to_short_break.value()*60
             self.save_conf_to_file()
             self.disable_breaks()
-            self.windows.show()
+            if(self.windows.isHidden()):
+                self.windows.show()
         else:
             self.windows.hide()
 
