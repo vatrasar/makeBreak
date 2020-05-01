@@ -7,5 +7,6 @@ Plik exe powinien być tworzony za pomocą pyinstaller. W folderu z exe musi zna
 
 ## UStawienie jako program startowy ubuntu
 Aby ustawić program jako startowy należy wejść do aplikacji programy startowe i dać tam polecenie:
-
+```
 /bin/bash -c "cd /sciezka/do/exe && sleep 15 && /sciezka/do/exe"
+```
