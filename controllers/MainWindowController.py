@@ -39,7 +39,9 @@ class MainWindowController():
 
 
     def startWorks(self):
-
+        self.time_to_start_long_break=5
+        self.time_for_long_break = 5
+        # self.time_to_start_short_break=3
         self.windows.hide()
         self.longThread=QTimer()
         self.longThread.timeout.connect(self.make_long_break)
@@ -95,6 +97,9 @@ class MainWindowController():
         else:
             self.ui.labInfo.setText("Możesz rozpocząć pracę!")
     def make_long_break(self):
+
+        
+
         self.longThread.stop()
         self.ui.btnStartWork.setEnabled(False)
         self.time_to_end_break = self.time_for_long_break
@@ -102,9 +107,9 @@ class MainWindowController():
         self.is_short_break = False
         self.update_time_label()
 
-        breakStepThread = QTimer()
-        breakStepThread.timeout.connect(self.break_step)
-        breakStepThread.start(1000)
+        self.breakStepThread = QTimer()
+        self.breakStepThread.timeout.connect(self.break_step)
+        self.breakStepThread.start(1000)
 
         # threading.Timer(1, self.break_step).start()
 
