@@ -42,10 +42,10 @@ class MainWindowController():
         
         # self.time_to_start_short_break=3
         self.windows.hide()
-        self.time_to_start_short_break=5
-        self.time_to_start_long_break=15
-        self.time_for_short_break=2
-        self.time_for_long_break=5
+        # self.time_to_start_short_break=5
+        # self.time_to_start_long_break=15
+        # self.time_for_short_break=2
+        # self.time_for_long_break=5
 
 
         self.stopAction.setEnabled(True)
