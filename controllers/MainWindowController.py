@@ -42,13 +42,14 @@ class MainWindowController():
         
         # self.time_to_start_short_break=3
         self.windows.hide()
-        self.longThread=QTimer()
-        self.longThread.timeout.connect(self.make_long_break)
+
         # self.longThread = threading.Timer(self.time_to_start_long_break,self.make_long_break)
 
         self.stopAction.setEnabled(True)
         self.resumeAction.setEnabled(False)
         if(not(self.is_short_break)):
+            self.longThread = QTimer()
+            self.longThread.timeout.connect(self.make_long_break)
             self.long_break_start_time = time.time()
             self.longThread.start(self.time_to_start_long_break*1000)
         if (self.is_enough_time_for_short()):
