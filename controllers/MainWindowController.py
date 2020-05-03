@@ -42,8 +42,11 @@ class MainWindowController():
         
         # self.time_to_start_short_break=3
         self.windows.hide()
+        self.time_to_start_short_break=5
+        self.time_to_start_long_break=15
+        self.time_for_short_break=2
+        self.time_for_long_break=5
 
-        # self.longThread = threading.Timer(self.time_to_start_long_break,self.make_long_break)
 
         self.stopAction.setEnabled(True)
         self.resumeAction.setEnabled(False)
@@ -147,6 +150,7 @@ class MainWindowController():
         self.startWorks()
         self.stopAction.setEnabled(True)
         self.resumeAction.setEnabled(False)
+        self.is_short_break = False
     def disable_breaks(self):
         try:
             self.shortThread.stop()
