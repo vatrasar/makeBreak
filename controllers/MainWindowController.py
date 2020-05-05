@@ -153,14 +153,22 @@ class MainWindowController():
     def open_progress_window(self):
         window = QtWidgets.QDialog()
 
-        ui_progress = progress_dialog_window.Ui_Dialog()
-        ui_progress.setupUi(window)
-        self.init_progress(ui_progress)
-        window.exec_()
+        self.ui_progress = progress_dialog_window.Ui_Dialog()
+        self.ui_progress.setupUi(window)
+        self.update_progress()
+        self.progressUpadteThread = QTimer()
+        self.progressUpadteThread.timeout.connect(self.update_progress)
+        self.progressUpadteThread.start(1000)
 
-    def init_progress(self,ui:progress_dialog_window.Ui_Dialog):
-        ui.progress_long_interval.setValue(ustils.progress_utils.get_progress(self.long_break_start_time,self.time_to_start_long_break))
-        ui.progress_short_interval.setValue(ustils.progress_utils.get_progress(self.short_break_start_time,self.time_to_start_short_break))
+        window.exec_()
+        self.progressUpadteThread.stop()
+
+
+
+
+    def update_progress(self):
+        self.ui_progress.progress_long_interval.setValue(ustils.progress_utils.get_progress(self.long_break_start_time,self.time_to_start_long_break))
+        self.ui_progress.progress_short_interval.setValue(ustils.progress_utils.get_progress(self.short_break_start_time,self.time_to_start_short_break))
 
 
     def exit(self):
