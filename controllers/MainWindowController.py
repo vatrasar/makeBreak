@@ -10,7 +10,8 @@ from MainWindows import Ui_MainWindow
 import time
 
 from settingsWindow import Ui_Dialog
-
+import progress_dialog_window
+import ustils.progress_utils
 
 class MainWindowController():
     def __init__(self,window:QMainWindow,ui:Ui_MainWindow,time_to_start_long_break:int,time_for_long_break:int,time_for_short_break:int,time_to_start_short_break:int) -> None:
@@ -26,6 +27,7 @@ class MainWindowController():
         self.time_to_end_break=0
         self.time_to_start_long_break=time_to_start_long_break
         self.long_break_start_time=time.time()
+        self.short_break_start_time=time.time()
         self.is_short_break=False
         self.load_conf_from_file()
 
@@ -42,10 +44,10 @@ class MainWindowController():
         
         # self.time_to_start_short_break=3
         self.windows.hide()
-        self.time_to_start_short_break=5
-        self.time_to_start_long_break=15
-        self.time_for_short_break=2
-        self.time_for_long_break=5
+        # self.time_to_start_short_break=5
+        # self.time_to_start_long_break=15
+        # self.time_for_short_break=2
+        # self.time_for_long_break=5
 
 
         self.stopAction.setEnabled(True)
@@ -64,6 +66,7 @@ class MainWindowController():
         self.shortThread = QTimer()
         self.shortThread.timeout.connect(self.make_short_break)
         self.shortThread.start(self.time_to_start_short_break*1000)
+        self.short_break_start_time=time.time()
 
     def make_short_break(self):
         self.shortThread.stop()
@@ -124,6 +127,10 @@ class MainWindowController():
         settingsAction = menu.addAction("Ustawienia")
         settingsAction.triggered.connect(self.open_settigns)
 
+        progressAction = menu.addAction("Pokaż postęp")
+        progressAction.triggered.connect(self.open_progress_window)
+
+
         exitAction = menu.addAction("exit")
         exitAction.triggered.connect(self.exit)
 
@@ -142,10 +149,26 @@ class MainWindowController():
         self.tray.setContextMenu(menu)
 
         self.tray.show()
+
+    def open_progress_window(self):
+        window = QtWidgets.QDialog()
+
+        ui_progress = progress_dialog_window.Ui_Dialog()
+        ui_progress.setupUi(window)
+        self.init_progress(ui_progress)
+        window.exec_()
+
+    def init_progress(self,ui:progress_dialog_window.Ui_Dialog):
+        ui.progress_long_interval.setValue(ustils.progress_utils.get_progress(self.long_break_start_time,self.time_to_start_long_break))
+        ui.progress_short_interval.setValue(ustils.progress_utils.get_progress(self.short_break_start_time,self.time_to_start_short_break))
+
+
     def exit(self):
         self.shortThread.stop()
         self.longThread.stop()
         sys.exit()
+
+
     def reasum_breaks(self):
         self.startWorks()
         self.stopAction.setEnabled(True)
@@ -190,6 +213,8 @@ class MainWindowController():
     def is_enough_time_for_short(self):
         time_form_last_long_break=time.time()-self.long_break_start_time
         return (self.time_to_start_long_break-time_form_last_long_break)-self.time_to_start_short_break-self.time_for_short_break>0
+
+
 
     def load_conf_from_file(self):
         file_in=open("conf.txt","r")

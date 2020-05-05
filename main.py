@@ -19,6 +19,7 @@ if __name__ == "__main__":
 
     window = QtWidgets.QMainWindow()
     app2.setWindowIcon(QIcon("resources/ikona.png"))
+    app2.setQuitOnLastWindowClosed(False)
     ui = Ui_MainWindow()
     ui.setupUi(window)
     controller = MainWindowController(window,ui,3600,180,20,1200)
